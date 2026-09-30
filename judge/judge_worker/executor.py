@@ -1,7 +1,12 @@
 import io
+import socket
 import tarfile
 import docker
 from docker.utils.socket import frames_iter
+
+MAX_OUTPUT_BYTES = 10 * 1024 * 1024  # 10 MB
+
+# send stdin
 
 from config import (
     WORKSPACE_DIR,
@@ -21,8 +26,8 @@ class JudgeExecutor:
         cmd = [
             "/bin/sh",
             "-lc",
-            f"gcc -O2 -pipe -static -s -o {WORKSPACE_DIR}/main.out {WORKSPACE_DIR}/main.c 2>&1",
-        ]
+            f"timeout -s KILL 10s gcc -O2 -pipe -static -s -o {WORKSPACE_DIR}/main.out {WORKSPACE_DIR}/main.c 2>&1", 
+        ] #Basically to stop malicious programs from running infinitely
         result = self._container_exec(container, cmd)
         exit_code = int(result.exit_code)
 
@@ -39,7 +44,7 @@ class JudgeExecutor:
         cmd = [
             "/bin/sh",
             "-lc",
-            f"g++ -O2 -std=c++17 -pipe -static -s -o {WORKSPACE_DIR}/main.out {WORKSPACE_DIR}/main.cpp 2>&1",
+            f"timeout -s KILL 10s g++ -O2 -std=c++17 -pipe -static -s -o {WORKSPACE_DIR}/main.out {WORKSPACE_DIR}/main.cpp 2>&1",
         ]
         result = self._container_exec(container, cmd)
         exit_code = int(result.exit_code)
@@ -95,19 +100,36 @@ class JudgeExecutor:
             tty=False,
         )
 
-        # send stdin
         sock._sock.sendall(input_data.encode())
+        sock._sock.shutdown(socket.SHUT_WR)
 
-        stdout_chunks = []
+        stdout_chunks = []   #Changed code to ensure infinite loops dont eat up memory. 
         stderr_chunks = []
+        stdout_size = 0
+        output_limit_hit = False
 
         for stream_id, payload in frames_iter(socket=sock, tty=False):
             if stream_id == 1:
+                stdout_size += len(payload)
+                if stdout_size > MAX_OUTPUT_BYTES:
+                    output_limit_hit = True
+                    break
                 stdout_chunks.append(payload)
             elif stream_id == 2:
-                stderr_chunks.append(payload)
+                stderr_chunks.append(payload)  # only the tiny `time` line
 
         sock.close()
+
+        if output_limit_hit:
+            partial = b"".join(stdout_chunks).decode("utf-8", errors="replace")
+            return RunResult(
+                ok=False,
+                verdict=Verdict.WRONG_ANSWER,
+                output=partial[:8192],
+                exit_code=-1,
+                runtime_ms=0,
+                memory_kb=0,
+            )
 
         inspect = self.client.api.exec_inspect(exec_id)
         exit_code = inspect["ExitCode"]
@@ -115,12 +137,17 @@ class JudgeExecutor:
         stdout_output = b"".join(stdout_chunks).decode("utf-8", errors="replace")
         stderr_output = b"".join(stderr_chunks).decode("utf-8", errors="replace")
 
-        stats = stderr_output.split("\n")[-2].split()
+        try:
+            stats = stderr_output.strip().splitlines()[-1].split()
+            time_elapsed = min(int(float(stats[0]) * 1000), time_limit_sec * 1000)
+            #fix: like if we solved a prob in a few ms, it would be shown as 0ms 
+            memory_kb_used = min(int(stats[1]), memory_limit_kb)
+        except (IndexError, ValueError):
+            time_elapsed, memory_kb_used = 0, 0
 
-        time_elapsed = min(int(float(stats[0])), time_limit_sec * 1000)
-        memory_kb_used = min(int(stats[1]), memory_limit_kb)
-
-        if memory_kb_used == memory_limit_kb:
+        if memory_kb_used == memory_limit_kb: #fix
+            verdict = Verdict.MEMORY_LIMIT_EXCEEDED
+        elif exit_code == 137 and time_elapsed < time_limit_sec * 1000 * 0.9:
             verdict = Verdict.MEMORY_LIMIT_EXCEEDED
         elif exit_code in (124, 137):
             verdict = Verdict.TIME_LIMIT_EXCEEDED

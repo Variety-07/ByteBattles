@@ -79,8 +79,11 @@ class JudgeOrchestrator:
             
             p.join(timeout=5)
 
-            if p.is_alive():
-                self.log.warning(f"Force killing worker {identifier}")
+            if p.is_alive(): #fix: Scaledown can kill a worker mid judge
+                sub = self.redis.get(f"{WORKER_PREFIX}:{identifier}:submission")
+                if sub:
+                    self.redis.lpush(REDIS_JOB_LIST, int(sub))
+                    self.redis.delete(f"{WORKER_PREFIX}:{identifier}:submission")
                 p.terminate()
                 p.join()
     

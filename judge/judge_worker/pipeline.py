@@ -9,11 +9,12 @@ from config import (
 from .types import SubmissionResult
 
 class JudgePipeline:
-    def __init__(self, db, storage, queues, executor):
+    def __init__(self, db, storage, queues, executor, heartbeat=None):
         self.db = db
         self.storage = storage
         self.queues = queues
         self.executor = executor
+        self.heartbeat = heartbeat
         self.client = docker.from_env()
     
     @contextmanager
@@ -53,12 +54,19 @@ class JudgePipeline:
             submission = db.query(Submission).filter(Submission.id == submission_id).first()
             if submission is None:
                 return
-            
+
             submission.verdict = result.verdict
             submission.output = result.output
             submission.incorrect_testcase_key = result.incorrect_testcase_key
             submission.walltime_ms = result.runtime_ms
             submission.memory_kb = result.memory_kb
+
+            # update problem counters
+            counters = {Problem.total_submissions: Problem.total_submissions + 1}
+            if result.verdict == Verdict.ACCEPTED:
+                counters[Problem.accepted_submissions] = Problem.accepted_submissions + 1 #fix: increment submissions
+
+            db.query(Problem).filter(Problem.id == submission.problem_id).update(counters)
 
     def process_submission(self, submission_id: int) -> SubmissionResult:
 
@@ -112,6 +120,8 @@ class JudgePipeline:
                 max_memory_used_kb = 0
 
                 for idx, testcase in enumerate(testcases, start=1):
+                    if self.heartbeat:
+                        self.heartbeat()
                     input_data = self.storage.read_testcase_input(testcase.input_key).decode("utf-8")
                     expected_output = self.storage.read_testcase_output(testcase.output_key).decode("utf-8")
 

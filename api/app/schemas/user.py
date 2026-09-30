@@ -59,8 +59,7 @@ class UserUpdate(BaseModel):
         return v
 
 class UserResponseUnknown(BaseModel):
-    username: str
-    is_verified: bool
+    username: str  #DELETED IS VERIFIED BOOL, AS THE QUERY ONLY OUTPUTS VERIFIED USERS.
     created_at: datetime
 
 class UserResponse(BaseModel):

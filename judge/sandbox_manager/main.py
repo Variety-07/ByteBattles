@@ -13,6 +13,8 @@ from config import CONTAINER_POOL_THRESHOLD, CONTAINER_WORKER_COUNT
 
 from ..utils import setup_logger
 
+from docker.errors import NotFound
+
 class SandboxManager:
 
     def __init__(
@@ -180,6 +182,8 @@ class SandboxManager:
                 container = self.client.containers.get(container_id)
                 container.stop(timeout=0)
 
+            except NotFound:
+                pass
             except Exception as e:
                 self.log.error(e)
 
@@ -194,6 +198,16 @@ class SandboxManager:
                 t = threading.Thread(target=self.creator_worker)
                 t.start()
                 self.threads.append(t)
+
+            # CLEAR STALE STATE FROM PREVIOUS RUN
+            for language in Language:
+                self.redis.delete(self.warm_queue(language.value))
+
+            for c in self.client.containers.list(all=True, filters={"name": "sandbox_"}):
+                try:
+                    c.remove(force=True)
+                except Exception:
+                    pass
 
             # INITIAL POOL
             for language in Language:

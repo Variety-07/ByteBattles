@@ -45,10 +45,9 @@ def create_token(payload: TokenPayload, expire, token_type: str):
     return encoded_token
 
 def create_access_token(payload: TokenPayload):
-    return create_token(payload, timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES), "access")
-
+    return create_token(payload, timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES), "access") 
 def create_refresh_token(payload: TokenPayload):
-    return create_token(payload, timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS), "refresh")
+    return create_token(payload, timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS), "refresh") # Fix: Extended Token expiry from minutes to 7 days
 
 def verify_token(token: str, token_type: str):
     try:
@@ -58,13 +57,18 @@ def verify_token(token: str, token_type: str):
         
         payload["sub"] = int(payload["sub"])
         token_data = TokenPayload(**payload)
-    except InvalidTokenError:
+    except (InvalidTokenError, ValueError, KeyError):
         raise credentials_exception
     
     return token_data
 
-def refresh_access_token(refresh_token: str):
+def refresh_access_token(refresh_token: str, db: Session):      # Fix: Ensures that deleted useres can't trade their refresh tokens with access tokens
     token_data = verify_token(refresh_token, "refresh")
+
+    user = db.query(User).filter(User.id == token_data.sub).first()
+    if not user:
+        raise credentials_exception
+
     return create_access_token(token_data)
 
 def get_current_user(access_token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):

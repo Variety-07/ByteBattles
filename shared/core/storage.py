@@ -18,6 +18,16 @@ def get_s3_client():
         config=Config(signature_version=S3_SIGNATURE_VERSION)
     )
 
+def ensure_bucket(name: str):   #To ensure automated Bucket Creation in MinIo if they dont exist.
+    client = get_s3_client()
+    try:
+        client.head_bucket(Bucket=name)   
+    except ClientError:
+        try:
+            client.create_bucket(Bucket=name)
+        except ClientError:
+            pass  
+
 class StorageServiceTestcases:
 
     def __init__(self, bucket_name):
@@ -153,8 +163,10 @@ class StorageServiceSubmissionCode:
 
 @cache
 def get_storage_testcases():
+    ensure_bucket(TESTCASE_BUCKET)
     return StorageServiceTestcases(TESTCASE_BUCKET)
 
 @cache
 def get_storage_submission_code():
+    ensure_bucket(SUBMISSION_BUCKET)
     return StorageServiceSubmissionCode(SUBMISSION_BUCKET)

@@ -12,7 +12,7 @@ class User(Base):
     username = Column(String, unique=True, nullable=False)
     email = Column(String, unique=True, nullable=False)
     password_hash = Column(String, nullable=False)
-    is_verified = Column(Boolean, server_default="FALSE")
+    is_verified = Column(Boolean, server_default="TRUE") #fix: Verified errore
     created_at = Column(DateTime, server_default=func.now(), nullable=False)
 
     user_type = Column(

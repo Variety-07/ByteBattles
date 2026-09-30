@@ -24,12 +24,18 @@ class JudgeWorker:
         self.db = Database()
         self.storage = StorageAdapter()
         self.executor = JudgeExecutor()
-        self.pipeline = JudgePipeline(self.db, self.storage, self.queues, self.executor)
+        self.pipeline = JudgePipeline(
+            self.db, self.storage, self.queues, self.executor,
+            heartbeat=self._beat
+        )
 
         self.log = setup_logger(
             f"worker-{self.identifier}",
             f"logs/worker_{self.identifier}.log"
         )
+
+    def _beat(self): #fix
+        self.redis.set(self.local_heartbeat_key, time.time())
     
     def _set_submission(self, submission_id):
         self.redis.set(self.current_submission_key, submission_id)
@@ -37,11 +43,12 @@ class JudgeWorker:
     def _delete_submission(self, submission_id):
         self.redis.delete(self.current_submission_key)
 
-    def _consume_from_list(self) -> None:
+    def _consume_from_list(self) -> None: #fixed: infinite looping of failed submissions.
         while self.redis.get(SHUTDOWN_KEY) != "1" and self.redis.get(self.local_shutdown_key) != "1":
 
             self.redis.set(self.local_heartbeat_key, time.time())
-            
+            submission_id = None
+
             try:
                 item = self.redis.brpop(REDIS_JOB_LIST, timeout=1)
                 if item is None:
@@ -53,15 +60,27 @@ class JudgeWorker:
                 self._set_submission(submission_id)
                 result = self.pipeline.process_submission(submission_id)
                 self._delete_submission(submission_id)
+                self.redis.delete(f"retries:{submission_id}")
                 self.log.info(f"Processed submission with ID: {result.submission_id} - Verdict: {result.verdict.value}")
             except KeyboardInterrupt:
                 self.log.info("Shutting down...")
                 return
             except ValueError as e:
                 self.log.error(e)
+                if submission_id is not None:
+                    self._delete_submission(submission_id)
             except Exception as e:
-                self.log.error(f"Processing of submission ID : {submission_id} failed with error: {e} - Attempting Retry")
-                self.redis.lpush(REDIS_JOB_LIST, submission_id)
+                self.log.error(f"Processing of submission ID : {submission_id} failed with error: {e}")
+                if submission_id is not None:
+                    self._delete_submission(submission_id)
+                    tries = self.redis.incr(f"retries:{submission_id}")
+                    if tries <= 3:
+                        self.log.info(f"Retrying submission {submission_id} (attempt {tries}/3)")
+                        self.redis.lpush(REDIS_JOB_LIST, submission_id)
+                    else:
+                        self.log.error(f"Giving up on submission {submission_id}")
+                        self.redis.delete(f"retries:{submission_id}")
+                        self.pipeline.mark_failed(submission_id)
                 time.sleep(1)
 
     def run(self) -> None:
