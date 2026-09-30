@@ -48,7 +48,7 @@ def create_access_token(payload: TokenPayload):
     return create_token(payload, timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES), "access")
 
 def create_refresh_token(payload: TokenPayload):
-    return create_token(payload, timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES), "refresh")
+    return create_token(payload, timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS), "refresh")
 
 def verify_token(token: str, token_type: str):
     try:

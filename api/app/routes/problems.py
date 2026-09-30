@@ -1,3 +1,6 @@
+import logging
+logger = logging.getLogger(__name__)
+
 import io
 import json
 import zipfile
@@ -28,9 +31,23 @@ router = APIRouter(
 # It's been pulled out — see PROBLEM_STATEMENT.md. `TagCreate` schema and the
 # `Category` model are still imported/available above for you to use.
 
+@router.post('/tag', status_code=status.HTTP_201_CREATED, response_model=TagCreate)
+def create_tag(tag: TagCreate, current_user: User = Depends(oauth2.get_current_admin), db: Session = Depends(get_db)):
+    existing = db.query(Category).filter(
+        (Category.slug == tag.slug) | (Category.name == tag.name)
+    ).first()
+    if existing:
+        raise HTTPException(detail="Tag with this name or slug already exists", status_code=status.HTTP_409_CONFLICT)
+
+    category = Category(name=tag.name, slug=tag.slug)
+    db.add(category)
+    db.commit()
+
+    return TagCreate(name=category.name, slug=category.slug)
+
 @router.get('/', status_code=status.HTTP_200_OK, response_model=List[ProblemResponse])
 def get_problems(page: int = Query(default=1, ge=1), limit: int = Query(default=20, ge=5, le=100), db: Session = Depends(get_db), current_user: User | None = Depends(oauth2.get_optional_current_admin)):
-    offset = page * limit
+    offset = (page-1) * limit
     if current_user:
         problems = db.query(Problem).order_by(Problem.id.asc()).offset(offset).limit(limit).all()
     else:
@@ -152,15 +169,30 @@ async def create_problem(
             raise HTTPException(detail="Mismatch in input and output file name. Each input file should have a corespoinding output file", status_code=status.HTTP_400_BAD_REQUEST)
     
     # Validating Array Data
+   
+    def safe_json_or_list(value: str) -> list:
+        value = value.strip()
+        if not value:
+            return []
+        try:
+            parsed = json.loads(value)
+            if isinstance(parsed, list):
+                return parsed
+            return [parsed]
+        except json.JSONDecodeError:
+            if "\n" in value:
+                return [line.strip() for line in value.splitlines() if line.strip()]
+            return [item.strip() for item in value.split(",") if item.strip()]
+
     try:
         array_data = ProblemArrayDataValidator(
-            tags=json.loads(tags),
-            constraints=json.loads(constraints),
+            tags=safe_json_or_list(tags),
+            constraints=safe_json_or_list(constraints),
             sample_io=json.loads(sample_io)
         )
-    except (json.JSONDecodeError, ValidationError):
+    except (json.JSONDecodeError, ValidationError) as e:
         zip_file.close()
-        raise HTTPException(detail="Invalid format for tags, constraints, or sample_io", status_code=status.HTTP_400_BAD_REQUEST)
+        raise HTTPException(detail=f"Invalid format for tags, constraints, or sample_io: {e}", status_code=status.HTTP_400_BAD_REQUEST)
     
     categories = db.query(Category).filter(Category.slug.in_(array_data.tags)).all()
     if len(categories) != len(array_data.tags):
@@ -224,6 +256,7 @@ async def create_problem(
         db.commit()
     except Exception:
         db.rollback()
+        logger.exception("Failed to create problem")
         get_storage_testcases().delete_problem_folder(problem.id)
         raise HTTPException(detail="Unknown Error Occurred", status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
     finally:

@@ -1,0 +1,42 @@
+2026-09-29 16:54:34,876 | 1 | INFO | Starting sandbox manager
+2026-09-29 16:54:34,935 | 1 | INFO | Running...
+2026-09-29 16:54:34,939 | 1 | INFO | Spawning worker with ID: 1
+2026-09-29 16:54:35,152 | 1 | INFO | Spawning worker with ID: 2
+2026-09-29 16:54:35,409 | 1 | INFO | Spawning worker with ID: 3
+2026-09-29 16:54:36,048 | 1 | INFO | Spawning worker with ID: 4
+2026-09-29 17:59:41,778 | 1 | INFO | Encountered signal 15 - Exiting gracefully
+2026-09-29 18:00:23,163 | 1 | INFO | Starting sandbox manager
+2026-09-29 18:00:23,211 | 1 | INFO | Running...
+2026-09-29 18:00:23,215 | 1 | INFO | Spawning worker with ID: 1
+2026-09-29 18:00:23,334 | 1 | INFO | Spawning worker with ID: 2
+2026-09-29 18:00:23,462 | 1 | INFO | Spawning worker with ID: 3
+2026-09-29 18:00:23,601 | 1 | INFO | Spawning worker with ID: 4
+2026-09-29 18:15:32,857 | 1 | INFO | Encountered signal 15 - Exiting gracefully
+2026-09-29 18:16:19,314 | 1 | INFO | Starting sandbox manager
+2026-09-29 18:16:19,337 | 1 | INFO | Running...
+2026-09-29 18:16:19,339 | 1 | INFO | Spawning worker with ID: 1
+2026-09-29 18:16:19,400 | 1 | INFO | Spawning worker with ID: 2
+2026-09-29 18:16:19,443 | 1 | INFO | Spawning worker with ID: 3
+2026-09-29 18:16:19,483 | 1 | INFO | Spawning worker with ID: 4
+2026-09-29 18:33:14,788 | 1 | INFO | Encountered signal 15 - Exiting gracefully
+2026-09-29 18:34:03,223 | 1 | INFO | Starting sandbox manager
+2026-09-29 18:34:03,248 | 1 | INFO | Running...
+2026-09-29 18:34:03,252 | 1 | INFO | Spawning worker with ID: 1
+2026-09-29 18:34:03,311 | 1 | INFO | Spawning worker with ID: 2
+2026-09-29 18:34:03,380 | 1 | INFO | Spawning worker with ID: 3
+2026-09-29 18:34:03,461 | 1 | INFO | Spawning worker with ID: 4
+2026-09-29 19:08:27,024 | 1 | INFO | Encountered signal 15 - Exiting gracefully
+2026-09-30 03:59:17,752 | 1 | INFO | Starting sandbox manager
+2026-09-30 03:59:17,833 | 1 | INFO | Running...
+2026-09-30 03:59:17,837 | 1 | INFO | Spawning worker with ID: 1
+2026-09-30 03:59:17,970 | 1 | INFO | Spawning worker with ID: 2
+2026-09-30 03:59:18,045 | 1 | INFO | Spawning worker with ID: 3
+2026-09-30 03:59:18,152 | 1 | INFO | Spawning worker with ID: 4
+2026-09-30 04:00:23,833 | 1 | INFO | Encountered signal 15 - Exiting gracefully
+2026-09-30 04:00:26,734 | 1 | INFO | Stopping...
+2026-09-30 04:00:33,612 | 1 | INFO | Starting sandbox manager
+2026-09-30 04:00:33,655 | 1 | INFO | Running...
+2026-09-30 04:00:33,658 | 1 | INFO | Spawning worker with ID: 1
+2026-09-30 04:00:33,736 | 1 | INFO | Spawning worker with ID: 2
+2026-09-30 04:00:33,818 | 1 | INFO | Spawning worker with ID: 3
+2026-09-30 04:00:33,885 | 1 | INFO | Spawning worker with ID: 4

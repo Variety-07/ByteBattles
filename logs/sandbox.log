@@ -1,0 +1,60 @@
+2026-09-29 16:54:34,930 | 7 | INFO | Maintaing pool - C - creating 10 containers
+2026-09-29 16:54:34,957 | 7 | INFO | Maintaing pool - CPP - creating 10 containers
+2026-09-29 16:54:34,976 | 7 | INFO | Maintaing pool - PY - creating 10 containers
+2026-09-29 16:54:34,979 | 7 | INFO | Running...
+2026-09-29 17:59:42,809 | 7 | INFO | Stopping...
+2026-09-29 17:59:43,544 | 7 | INFO | Cleaning pool - C
+2026-09-29 17:59:44,732 | 7 | INFO | Cleaning pool - CPP
+2026-09-29 18:00:23,225 | 7 | INFO | Maintaing pool - C - creating 10 containers
+2026-09-29 18:00:23,241 | 7 | INFO | Maintaing pool - CPP - creating 1 containers
+2026-09-29 18:00:23,243 | 7 | INFO | Running...
+2026-09-29 18:15:33,020 | 7 | INFO | Stopping...
+2026-09-29 18:15:33,789 | 7 | INFO | Cleaning pool - C
+2026-09-29 18:15:34,768 | 7 | INFO | Cleaning pool - CPP
+2026-09-29 18:15:35,738 | 7 | INFO | Cleaning pool - PY
+2026-09-29 18:16:19,341 | 7 | INFO | Maintaing pool - C - creating 10 containers
+2026-09-29 18:16:19,350 | 7 | INFO | Maintaing pool - CPP - creating 10 containers
+2026-09-29 18:16:19,352 | 7 | INFO | Maintaing pool - PY - creating 2 containers
+2026-09-29 18:16:19,354 | 7 | INFO | Running...
+2026-09-29 18:33:15,283 | 7 | INFO | Stopping...
+2026-09-29 18:33:16,107 | 7 | INFO | Cleaning pool - C
+2026-09-29 18:33:17,091 | 7 | INFO | Cleaning pool - CPP
+2026-09-29 18:34:03,253 | 7 | INFO | Maintaing pool - C - creating 10 containers
+2026-09-29 18:34:03,262 | 7 | INFO | Maintaing pool - CPP - creating 8 containers
+2026-09-29 18:34:03,268 | 7 | INFO | Running...
+2026-09-29 19:08:27,751 | 7 | INFO | Stopping...
+2026-09-29 19:08:28,750 | 7 | INFO | Cleaning pool - C
+2026-09-30 03:59:17,845 | 7 | INFO | Maintaing pool - C - creating 6 containers
+2026-09-30 03:59:17,868 | 7 | INFO | Running...
+2026-09-30 04:00:24,605 | 7 | INFO | Stopping...
+2026-09-30 04:00:25,457 | 7 | INFO | Cleaning pool - C
+2026-09-30 04:00:25,476 | 7 | ERROR | 404 Client Error for http+docker://localhost/v1.56/containers/4f3df37ae4a2eb1841cedb66d573627600f70d5193bb6edde6eb71fda75bdef4/json: Not Found ("No such container: 4f3df37ae4a2eb1841cedb66d573627600f70d5193bb6edde6eb71fda75bdef4")
+2026-09-30 04:00:25,492 | 7 | ERROR | 404 Client Error for http+docker://localhost/v1.56/containers/ee066eb277c23a8c0d010091c28b2c81d544a493ee7038d8a8b970d719b4609a/json: Not Found ("No such container: ee066eb277c23a8c0d010091c28b2c81d544a493ee7038d8a8b970d719b4609a")
+2026-09-30 04:00:25,508 | 7 | ERROR | 404 Client Error for http+docker://localhost/v1.56/containers/31cebda7243b465abc6afe3f6856c099df29b9a7601fce3fc8e2b710f0d6acb8/json: Not Found ("No such container: 31cebda7243b465abc6afe3f6856c099df29b9a7601fce3fc8e2b710f0d6acb8")
+2026-09-30 04:00:25,526 | 7 | ERROR | 404 Client Error for http+docker://localhost/v1.56/containers/ea8387cfab4729d938f7735bafc37d5cff2af7a21d11220742a6dd465f3da096/json: Not Found ("No such container: ea8387cfab4729d938f7735bafc37d5cff2af7a21d11220742a6dd465f3da096")
+2026-09-30 04:00:26,504 | 7 | INFO | Cleaning pool - CPP
+2026-09-30 04:00:26,517 | 7 | ERROR | 404 Client Error for http+docker://localhost/v1.56/containers/326042755bfa81d093d8eccdd9c516671ca04c7b439edb263625b69799b1b504/json: Not Found ("No such container: 326042755bfa81d093d8eccdd9c516671ca04c7b439edb263625b69799b1b504")
+2026-09-30 04:00:26,527 | 7 | ERROR | 404 Client Error for http+docker://localhost/v1.56/containers/d224894373a6377ebd4c9a4a7d7d0ae70fdb470f28856a00925ebf54413ff72c/json: Not Found ("No such container: d224894373a6377ebd4c9a4a7d7d0ae70fdb470f28856a00925ebf54413ff72c")
+2026-09-30 04:00:26,539 | 7 | ERROR | 404 Client Error for http+docker://localhost/v1.56/containers/67a2a725661de9cfae37d13aaeb1e75fa1563eec5396871d148cd9cb79531ec4/json: Not Found ("No such container: 67a2a725661de9cfae37d13aaeb1e75fa1563eec5396871d148cd9cb79531ec4")
+2026-09-30 04:00:26,550 | 7 | ERROR | 404 Client Error for http+docker://localhost/v1.56/containers/508d26a207e60909f2b4216cb38709ac57227cac82fbdae9f5132865e787d9af/json: Not Found ("No such container: 508d26a207e60909f2b4216cb38709ac57227cac82fbdae9f5132865e787d9af")
+2026-09-30 04:00:26,562 | 7 | ERROR | 404 Client Error for http+docker://localhost/v1.56/containers/d2996b40f707111400451c3c36edb707b44db5d8a7028786b0b96a66fe5f6080/json: Not Found ("No such container: d2996b40f707111400451c3c36edb707b44db5d8a7028786b0b96a66fe5f6080")
+2026-09-30 04:00:26,574 | 7 | ERROR | 404 Client Error for http+docker://localhost/v1.56/containers/06eadbcaaf1df15a411e8e6d46dddb67ac06109882740460b9efc005cb869e92/json: Not Found ("No such container: 06eadbcaaf1df15a411e8e6d46dddb67ac06109882740460b9efc005cb869e92")
+2026-09-30 04:00:26,585 | 7 | ERROR | 404 Client Error for http+docker://localhost/v1.56/containers/fe5a2abb8da14d5e8081b373edb06ab66e4e0a1220370de6cf78697f034b43fe/json: Not Found ("No such container: fe5a2abb8da14d5e8081b373edb06ab66e4e0a1220370de6cf78697f034b43fe")
+2026-09-30 04:00:26,595 | 7 | ERROR | 404 Client Error for http+docker://localhost/v1.56/containers/6b09913488eacfea168fab575a1e209ecf98c2e276c5a2758e1bb83f6982fca6/json: Not Found ("No such container: 6b09913488eacfea168fab575a1e209ecf98c2e276c5a2758e1bb83f6982fca6")
+2026-09-30 04:00:26,606 | 7 | ERROR | 404 Client Error for http+docker://localhost/v1.56/containers/31f68185be915d51bf2807c14b7b03bf6fda35f2cb29f5209849e4b8735ca3f3/json: Not Found ("No such container: 31f68185be915d51bf2807c14b7b03bf6fda35f2cb29f5209849e4b8735ca3f3")
+2026-09-30 04:00:26,615 | 7 | ERROR | 404 Client Error for http+docker://localhost/v1.56/containers/1d6a6fa5da7c2346041dfc979d7bf258c310fff16a8c2565545d9689d4991606/json: Not Found ("No such container: 1d6a6fa5da7c2346041dfc979d7bf258c310fff16a8c2565545d9689d4991606")
+2026-09-30 04:00:26,617 | 7 | INFO | Cleaning pool - PY
+2026-09-30 04:00:26,624 | 7 | ERROR | 404 Client Error for http+docker://localhost/v1.56/containers/d194eaa1a65044e6b8d4e0b6910d8fd2060108a3336838e2a9df940a3b655278/json: Not Found ("No such container: d194eaa1a65044e6b8d4e0b6910d8fd2060108a3336838e2a9df940a3b655278")
+2026-09-30 04:00:26,634 | 7 | ERROR | 404 Client Error for http+docker://localhost/v1.56/containers/123ff391f7655b19136b76d47224263bff945207ab98925ffc53ed5dbd25e850/json: Not Found ("No such container: 123ff391f7655b19136b76d47224263bff945207ab98925ffc53ed5dbd25e850")
+2026-09-30 04:00:26,643 | 7 | ERROR | 404 Client Error for http+docker://localhost/v1.56/containers/27d5df78c2f97e5da7fe01cf7ee3e1ea64aa89ae3a2f0f9742b6f18b667733d6/json: Not Found ("No such container: 27d5df78c2f97e5da7fe01cf7ee3e1ea64aa89ae3a2f0f9742b6f18b667733d6")
+2026-09-30 04:00:26,651 | 7 | ERROR | 404 Client Error for http+docker://localhost/v1.56/containers/67848352fd7ed27bf943ff6e1c9da54e9c4171ab666302c18879515ccbf696d1/json: Not Found ("No such container: 67848352fd7ed27bf943ff6e1c9da54e9c4171ab666302c18879515ccbf696d1")
+2026-09-30 04:00:26,659 | 7 | ERROR | 404 Client Error for http+docker://localhost/v1.56/containers/281fbb82bc97155777528f1137d59153b98ace0842a693ccdf041175a595fe6a/json: Not Found ("No such container: 281fbb82bc97155777528f1137d59153b98ace0842a693ccdf041175a595fe6a")
+2026-09-30 04:00:26,668 | 7 | ERROR | 404 Client Error for http+docker://localhost/v1.56/containers/35273c7bed34d35e51f8c7a725abf7ae696ac39bdf9ad466e9183ded13622b65/json: Not Found ("No such container: 35273c7bed34d35e51f8c7a725abf7ae696ac39bdf9ad466e9183ded13622b65")
+2026-09-30 04:00:26,678 | 7 | ERROR | 404 Client Error for http+docker://localhost/v1.56/containers/0c0847816ddb58b4acd666da62c891c003cfe76ca1e8655ea69808c1cab80faa/json: Not Found ("No such container: 0c0847816ddb58b4acd666da62c891c003cfe76ca1e8655ea69808c1cab80faa")
+2026-09-30 04:00:26,709 | 7 | ERROR | 404 Client Error for http+docker://localhost/v1.56/containers/91c16e33a4f3f39f95ff27c09ab271a7fb62106696b5639a4b7b41b7d5ce9f95/json: Not Found ("No such container: 91c16e33a4f3f39f95ff27c09ab271a7fb62106696b5639a4b7b41b7d5ce9f95")
+2026-09-30 04:00:26,717 | 7 | ERROR | 404 Client Error for http+docker://localhost/v1.56/containers/2cdaf07a24200e94331e0a371ddf12a95d230b27dfd3de0915558af6d88c35e6/json: Not Found ("No such container: 2cdaf07a24200e94331e0a371ddf12a95d230b27dfd3de0915558af6d88c35e6")
+2026-09-30 04:00:26,730 | 7 | ERROR | 404 Client Error for http+docker://localhost/v1.56/containers/03a890f6eee37a8f7e28213b356b0b272b2f00aa90c8bf9d01f6eff184e5dd83/json: Not Found ("No such container: 03a890f6eee37a8f7e28213b356b0b272b2f00aa90c8bf9d01f6eff184e5dd83")
+2026-09-30 04:00:33,661 | 7 | INFO | Maintaing pool - C - creating 10 containers
+2026-09-30 04:00:33,672 | 7 | INFO | Maintaing pool - CPP - creating 10 containers
+2026-09-30 04:00:33,680 | 7 | INFO | Maintaing pool - PY - creating 10 containers
+2026-09-30 04:00:33,684 | 7 | INFO | Running...
